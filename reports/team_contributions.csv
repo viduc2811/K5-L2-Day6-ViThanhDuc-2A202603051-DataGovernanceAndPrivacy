@@ -1,2 +1,2 @@
 member,git_author_name,git_email,role,modules_files,commit_shas,evidence_note,presenter
-Vi Thanh Đức,viduc2811,viduc28112002@gmail.com,All,"src/main.py; configs/; fixtures/; tools/; src/pipeline.py, tests/; reports/metrics_*.json, reports/group_report.md; demo/",,,
+Vi Thanh Đức,viduc2811,viduc28112002@gmail.com,All,"src/main.py; configs/; fixtures/; tools/; src/pipeline.py, tests/; reports/metrics_*.json, reports/group_report.md; demo/",e742210,,

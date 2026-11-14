@@ -50,8 +50,8 @@ Ngày xem: 14/11/2025
 
 ## 04 · Baseline vs PoC
 
-- Baseline (mô tả, version/config, commit): src/baseline_t06.py: chỉ parse annotations.json và release_meta.json, kiểm 3 khóa bắt buộc và file ảnh tồn tại; không so semantic invariants, không so với parent. Parse được thì PASS. Config hash 2596bf6561fc.
-- PoC (mô tả, version/config, commit): src/pipeline.py: 5 phép kiểm (id trùng, ít ảnh hơn parent, lệch bbox trung bình > 1.0 px, parent_sha256 sai, categories khác label map), hàng đợi review, override có audit, quyết định có reason_code và owner. Config hash f58166a1361c.
+- Baseline (mô tả, version/config, commit): src/baseline_t06.py: chỉ parse annotations.json và release_meta.json, kiểm 3 khóa bắt buộc và file ảnh tồn tại; không so semantic invariants, không so với parent. Parse được thì PASS. Config hash 2596bf6561fc commit: e742210
+- PoC (mô tả, version/config, commit): src/pipeline.py: 5 phép kiểm (id trùng, ít ảnh hơn parent, lệch bbox trung bình > 1.0 px, parent_sha256 sai, categories khác label map), hàng đợi review, override có audit, quyết định có reason_code và owner. Config hash f58166a1361c, commit: e742210
 - Cùng budget / cùng heldout / cùng seed: xác nhận: cùng dữ liệu (fixtures/t06_release_gate), seed 42, offline, B = 20.
 
 **Bảng 1 · Baseline vs PoC & hard slices** — dán output của
@@ -102,7 +102,7 @@ Ngày xem: 14/11/2025
 ```
 
 - Output của `pytest -q`: 1 failed, các test còn lại pass hoặc skip (test cần gt/ bị skip). Test fail là tests/test_cli.py::test_template_pipeline_fails_clearly_not_silently: nó kiểm bản pipeline.py mẫu chưa implement phải thoát mã 3, chạy với track t02. Sau khi nhóm implement T06, pipeline thoát mã 2 vì không thấy releases.csv của t02. Không ảnh hưởng PoC T06 (status=0) và 5 test T06 của nhóm (pass).
-- Máy / CPU / OS / Python: Windows 10 (10.0.19045) · Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz · Python 3.11.9 · git sha:
+- Máy / CPU / OS / Python: Windows 10 (10.0.19045) · Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz · Python 3.11.9 · git sha: e742210
 
 ## 09 · Limitations & ethics
 
@@ -117,7 +117,7 @@ Ngày xem: 14/11/2025
 
 | Học viên | Git author/email | Module / vai trò | Commit SHA / diff chứng minh | Trình bày? |
 |---|---|---|---|---|
-| Vi Thanh Đức | viduc28112002@gmail.com | Core algorithm (src/pipeline.py), baseline (src/baseline_t06.py), test (tests/test_t06_gate.py), human review, báo cáo | |có |
+| Vi Thanh Đức | viduc28112002@gmail.com | Core algorithm (src/pipeline.py), baseline (src/baseline_t06.py), test (tests/test_t06_gate.py), human review, báo cáo |e742210 |có |
 
 
 ## 11 · References
