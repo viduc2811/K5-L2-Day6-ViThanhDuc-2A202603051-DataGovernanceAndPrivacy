@@ -12,7 +12,7 @@
 | Challenge | T06 · Dataset Semantic Integrity & Provenance Gate |
 | Thành viên (1) + vai trò | Vi Thanh Đức (Core algorithm, Human review, Report) |
 | Git URL | https://github.com/viduc2811/K5-L2-Day6-ViThanhDuc-2A202603051-DataGovernanceAndPrivacy |
-| Tag `demo-180m` (commit) | ____ |
+| Tag `demo-180m` (commit) | Không có demo 180m |
 | Tag `final-24h` (commit) | ____ |
 | Deadline (giờ VN) | ____ |
 
