@@ -1,0 +1,16 @@
+{
+  "status": "HOLD",
+  "reason_code": "SILENT_DEFECTS_FOUND",
+  "reason": "10/20 release bị chặn: {'stale_map': 2, 'dropped_frames': 2, 'bbox_shift': 2, 'class_swap': 2, 'id_collision': 2}",
+  "owner": "Vi Thanh Duc - reviewer",
+  "scope": "t06",
+  "evidence": [
+    "out\\poc\\release_decisions.csv"
+  ],
+  "metrics": {
+    "blocked": 10,
+    "total": 20
+  },
+  "ts": "2026-11-14T10:45:47+00:00",
+  "canonical": "HOLD"
+}

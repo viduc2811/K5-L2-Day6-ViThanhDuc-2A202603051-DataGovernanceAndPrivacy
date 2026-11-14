@@ -1,0 +1,5 @@
+ts,scope,status,canonical,reason_code,reason,owner,evidence
+2026-11-14T09:16:54+00:00,t06,HOLD,HOLD,SILENT_DEFECTS_FOUND,"10/20 release bị chặn: {'stale_map': 2, 'dropped_frames': 2, 'bbox_shift': 2, 'class_swap': 2, 'id_collision': 2}",Vi Thanh Duc - reviewer,out\poc\release_decisions.csv
+2026-11-14T10:37:20+00:00,t06,HOLD,HOLD,SILENT_DEFECTS_FOUND,"10/20 release bị chặn: {'stale_map': 2, 'dropped_frames': 2, 'bbox_shift': 2, 'class_swap': 2, 'id_collision': 2}",Vi Thanh Duc - reviewer,out\poc\release_decisions.csv
+2026-11-14T10:40:34+00:00,t06,HOLD,HOLD,SILENT_DEFECTS_FOUND,"10/20 release bị chặn: {'stale_map': 2, 'dropped_frames': 2, 'bbox_shift': 2, 'class_swap': 2, 'id_collision': 2}",Vi Thanh Duc - reviewer,out\poc\release_decisions.csv
+2026-11-14T10:45:47+00:00,t06,HOLD,HOLD,SILENT_DEFECTS_FOUND,"10/20 release bị chặn: {'stale_map': 2, 'dropped_frames': 2, 'bbox_shift': 2, 'class_swap': 2, 'id_collision': 2}",Vi Thanh Duc - reviewer,out\poc\release_decisions.csv

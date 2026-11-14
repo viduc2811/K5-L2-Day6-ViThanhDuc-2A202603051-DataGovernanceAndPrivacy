@@ -1,0 +1,21 @@
+rank,item_id,score,reason,suggested_action,slice,evidence_path,reviewer,reviewer_decision,override_value,review_note,reviewed_at
+1,r01,1.0,stale_map,,,,Vi Thanh Duc,approve,,"r01 annotations.json: khai bao lm-3 nhung categories chi co 4 class (thieu truck), trung label map cu lm-2. Xac nhan HOLD dung.",2026-11-14T10:26:16Z
+2,r02,1.0,dropped_frames,,,,Vi Thanh Duc,approve,,"r02 annotations.json: images 91/100, thieu 9 image id (vd 66, 67, 68, 69, 70, 71). Xac nhan HOLD dung.",2026-11-14T10:26:16Z
+3,r05,1.0,bbox_shift,,,,Vi Thanh Duc,approve,,"r05 annotations.json: bbox lech TB 8.18px > 1.0px; vd ann 671 (image 97) [164.51, 116.84, 53.12, 31.39] -> [193.59, 130.21, 53.12, 31.39]. Xac nhan HOLD dung.",2026-11-14T10:26:16Z
+4,r07,1.0,class_swap,,,,Vi Thanh Duc,approve,,r07 annotations.json: categories khac v1.0 (id1: car->pedestrian; id2: pedestrian->car). Xac nhan HOLD dung.,2026-11-14T10:26:16Z
+5,r08,1.0,id_collision,,,,Vi Thanh Duc,approve,,"r08 annotations.json: annotation id bi trung (12 id, vd 621, 79, 315, 223). Xac nhan HOLD dung.",2026-11-14T10:26:16Z
+6,r09,1.0,stale_map,,,,Vi Thanh Duc,approve,,"r09 annotations.json: khai bao lm-3 nhung categories chi co 4 class (thieu truck), trung label map cu lm-2. Xac nhan HOLD dung.",2026-11-14T10:26:16Z
+7,r10,1.0,bbox_shift,,,,Vi Thanh Duc,approve,,"r10 annotations.json: bbox lech TB 8.1px > 1.0px; vd ann 492 (image 71) [32.96, 92.14, 14.09, 39.86] -> [62.58, 106.09, 14.09, 39.86]. Xac nhan HOLD dung.",2026-11-14T10:26:16Z
+8,r16,1.0,dropped_frames,,,,Vi Thanh Duc,approve,,"r16 annotations.json: images 93/100, thieu 7 image id (vd 26, 27, 28, 29, 30, 31). Xac nhan HOLD dung.",2026-11-14T10:26:16Z
+9,r18,1.0,id_collision,,,,Vi Thanh Duc,approve,,"r18 annotations.json: annotation id bi trung (11 id, vd 243, 317, 108, 98). Xac nhan HOLD dung.",2026-11-14T10:26:16Z
+10,r20,1.0,class_swap,,,,Vi Thanh Duc,approve,,r20 annotations.json: categories khac v1.0 (id1: car->pedestrian; id2: pedestrian->car). Xac nhan HOLD dung.,2026-11-14T10:26:16Z
+11,r03,0.0,no_violation,,,,Vi Thanh Duc,approve,,"r03 annotations.json: 101/100 images (+1 anh), bbox lech TB 0.0px <= 1.0px, categories va parent_sha256 khop v1.0, khong trung id. Xac nhan PASS dung.",2026-11-14T10:26:16Z
+12,r04,0.0,no_violation,,,,Vi Thanh Duc,approve,,"r04 annotations.json: 101/100 images (+1 anh), bbox lech TB 0.01px <= 1.0px, categories va parent_sha256 khop v1.0, khong trung id. Xac nhan PASS dung.",2026-11-14T10:26:16Z
+13,r06,0.0,no_violation,,,,Vi Thanh Duc,approve,,"r06 annotations.json: 101/100 images (+1 anh), bbox lech TB 0.0px <= 1.0px, categories va parent_sha256 khop v1.0, khong trung id. Xac nhan PASS dung.",2026-11-14T10:26:16Z
+14,r11,0.0,no_violation,,,,Vi Thanh Duc,approve,,"r11 annotations.json: 101/100 images (+1 anh), bbox lech TB 0.01px <= 1.0px, categories va parent_sha256 khop v1.0, khong trung id. Xac nhan PASS dung.",2026-11-14T10:26:16Z
+15,r12,0.0,no_violation,,,,Vi Thanh Duc,approve,,"r12 annotations.json: 100/100 images (+0 anh), bbox lech TB 0.0px <= 1.0px, categories va parent_sha256 khop v1.0, khong trung id. Xac nhan PASS dung.",2026-11-14T10:26:16Z
+16,r13,0.0,no_violation,,,,Vi Thanh Duc,approve,,"r13 annotations.json: 100/100 images (+0 anh), bbox lech TB 0.0px <= 1.0px, categories va parent_sha256 khop v1.0, khong trung id. Xac nhan PASS dung.",2026-11-14T10:26:16Z
+17,r14,0.0,no_violation,,,,Vi Thanh Duc,approve,,"r14 annotations.json: 100/100 images (+0 anh), bbox lech TB 0.0px <= 1.0px, categories va parent_sha256 khop v1.0, khong trung id. Xac nhan PASS dung.",2026-11-14T10:26:16Z
+18,r15,0.0,no_violation,,,,Vi Thanh Duc,approve,,"r15 annotations.json: 101/100 images (+1 anh), bbox lech TB 0.0px <= 1.0px, categories va parent_sha256 khop v1.0, khong trung id. Xac nhan PASS dung.",2026-11-14T10:26:16Z
+19,r17,0.0,no_violation,,,,Vi Thanh Duc,approve,,"r17 annotations.json: 100/100 images (+0 anh), bbox lech TB 0.0px <= 1.0px, categories va parent_sha256 khop v1.0, khong trung id. Xac nhan PASS dung.",2026-11-14T10:26:16Z
+20,r19,0.0,no_violation,,,,Vi Thanh Duc,approve,,"r19 annotations.json: 101/100 images (+1 anh), bbox lech TB 0.0px <= 1.0px, categories va parent_sha256 khop v1.0, khong trung id. Xac nhan PASS dung.",2026-11-14T10:26:16Z

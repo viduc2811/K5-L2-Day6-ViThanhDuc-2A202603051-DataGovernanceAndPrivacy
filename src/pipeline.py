@@ -17,12 +17,16 @@ See src/examples/random_baseline.py for a minimal end-to-end wiring example.
 """
 from __future__ import annotations
 
+import hashlib
+import json
+from collections import defaultdict
+
 import pandas as pd
 
 from .common.context import RunContext
 from .common.decision import Decision, write_decision
 from .common.manifest import verify_manifest
-from .common.review import load_review_decisions, make_review_queue, write_review_queue
+from .common.review import apply_overrides, load_review_decisions, make_review_queue, write_review_queue
 from .metrics.tracks import get_track
 
 
@@ -35,18 +39,61 @@ def load(ctx: RunContext) -> dict:
         if ctx.config.get("strict_provenance", True):
             raise ValueError(f"provenance check failed ({len(problems)} problems), first: {problems[:3]}")
     data = {"manifest": pd.read_csv(manifest) if manifest.exists() else None}
-    # TODO: load the tables/images your track needs, e.g.
-    # data["images"] = pd.read_csv(ctx.input_dir / "images.csv")
+    data["releases"] = pd.read_csv(ctx.input_dir / "releases.csv")
+    data["label_maps"] = json.loads((ctx.input_dir / "releases/label_maps.json").read_text(encoding="utf-8"))
+    data["parent_path"] = ctx.input_dir / ctx.param("parent_release", "releases/v1.0") / "annotations.json"
+    data["parent"] = json.loads(data["parent_path"].read_text(encoding="utf-8"))
     return data
 
 
 # ---------------------------------------------------------------- 02 process
+BBOX_SHIFT_PX = 1.0  # chốt trên split dev, TRƯỚC khi xem eval
+
+
+def _validate_release(root, rel_dir, parent, parent_path, label_maps) -> list[str]:
+    ann = json.loads((rel_dir / "annotations.json").read_text(encoding="utf-8"))
+    meta = json.loads((rel_dir / "release_meta.json").read_text(encoding="utf-8"))
+    anns, imgs = ann["annotations"], ann["images"]
+    cats = {c["id"]: c["name"] for c in ann["categories"]}
+    issues = []
+    # 1) id trùng
+    ids = [a["id"] for a in anns]
+    if len(ids) != len(set(ids)):
+        issues.append("id_collision")
+    # 2) rơi frame (nhiều hơn parent 1 ảnh là thay đổi lành tính)
+    if len(imgs) < len(parent["images"]):
+        issues.append("dropped_frames")
+    # 3) bbox lệch so với parent
+    by_img = defaultdict(list)
+    for p in parent["annotations"]:
+        by_img[p["image_id"]].append(p)
+    dist = []
+    for a in anns:
+        cand = by_img.get(a["image_id"])
+        if cand:
+            b = min(cand, key=lambda p: abs(p["bbox"][0] - a["bbox"][0]) + abs(p["bbox"][1] - a["bbox"][1]))
+            dist.append(abs(a["bbox"][0] - b["bbox"][0]) + abs(a["bbox"][1] - b["bbox"][1]))
+    if dist and sum(dist) / len(dist) > BBOX_SHIFT_PX:
+        issues.append("bbox_shift")
+    # 4) label map + provenance (sha256 của parent)
+    declared = {int(k): v for k, v in label_maps.get(meta["label_map_version"], {}).items()}
+    if meta.get("parent_sha256") != hashlib.sha256(parent_path.read_bytes()).hexdigest():
+        issues.append("stale_map")
+    elif cats != declared:
+        old = {int(k): v for k, v in label_maps["lm-2"].items()}
+        issues.append("stale_map" if cats == old else "class_swap")
+    return issues
+
+
 def process(ctx: RunContext, data: dict) -> pd.DataFrame:
-    spec = get_track(ctx.track)
-    raise NotImplementedError(
-        f"Implement process() for {spec.track} ({spec.title}). It must produce a DataFrame with at least "
-        f"{spec.pred_columns} (saved as out/{spec.pred_file}). See docs/tracks/{spec.track.upper()}.md"
-    )
+    rows = []
+    for r in data["releases"].itertuples(index=False):
+        issues = _validate_release(ctx.input_dir, ctx.input_dir / r.path, data["parent"], data["parent_path"], data["label_maps"])
+        rows.append({"release_id": r.release_id, "score": float(len(issues)),
+                     "decision": "HOLD" if issues else "PASS",
+                     "root_cause": issues[0] if issues else "clean",
+                     "reason": ";".join(issues) if issues else "no_violation", "split": r.split})
+    return pd.DataFrame(rows)
 
 
 # ---------------------------------------------------------------- 03 rank
@@ -73,15 +120,29 @@ def review(ctx: RunContext, scored: pd.DataFrame, queue: pd.DataFrame) -> pd.Dat
     if reviewed_path.exists():
         reviewed = load_review_decisions(reviewed_path)
         ctx.stats["n_reviewed"] = len(reviewed)
-        # TODO: apply overrides
+        for r in reviewed.itertuples(index=False):
+            if r.reviewer_decision == "approve" and ctx.audit:
+                cur = scored.loc[scored["release_id"].astype(str) == str(r.item_id), "decision"]
+                ctx.audit.log(actor=r.reviewer, action="review:approve", item_id=r.item_id,
+                              before=cur.iloc[0] if len(cur) else None,
+                              after=cur.iloc[0] if len(cur) else None, reason=r.review_note)
+        return apply_overrides(scored, reviewed, id_col="release_id", value_col="decision", audit=ctx.audit)
     return scored
 
 
 # ---------------------------------------------------------------- 05 decide
 def decide(ctx: RunContext, final: pd.DataFrame) -> Decision:
-    # TODO: replace with your policy (thresholds frozen BEFORE looking at eval results)
-    return Decision(status="HOLD", reason_code="POLICY_NOT_IMPLEMENTED", reason="Decision policy not implemented yet",
-                    owner=ctx.config.get("owner", "TODO-owner"), scope=ctx.track)
+    blocked = final[final["decision"] != "PASS"]
+    owner = ctx.config.get("owner", "TODO-owner")
+    ev = [str(ctx.out("release_decisions.csv"))]
+    if len(blocked):
+        causes = blocked["root_cause"].value_counts().to_dict()
+        return Decision(status="HOLD", reason_code="SILENT_DEFECTS_FOUND",
+                        reason=f"{len(blocked)}/{len(final)} release bị chặn: {causes}",
+                        owner=owner, scope=ctx.track, evidence=ev,
+                        metrics={"blocked": int(len(blocked)), "total": int(len(final))})
+    return Decision(status="GO", reason_code="ALL_RELEASES_CLEAN", reason="Không phát hiện lỗi nào",
+                    owner=owner, scope=ctx.track, evidence=ev)
 
 
 def run(ctx: RunContext) -> None:
